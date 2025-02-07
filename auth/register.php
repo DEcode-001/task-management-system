@@ -1,36 +1,46 @@
 <?php
-require_once '../config/config.php';
+session_start();
+require '../config/config.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $name = trim($_POST['name']);
     $email = trim($_POST['email']);
-    $password = trim($_POST['password']);
-    $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-    $role = 'user';
+    $password = $_POST['password'];
+    $confirm_password = $_POST['confirm_password'];
 
-    if (!empty($name) && !empty($email) && !empty($password)) {
-        try {
-            $sql = "INSERT INTO users (name, email, password, role) VALUES (:name, :email, :password, :role)";
-            $stmt = $conn->prepare($sql);
-            $stmt->execute([
-                ':name' => $name,
-                ':email' => $email,
-                ':password' => $hashed_password,
-                ':role' => $role
-            ]);
-            echo "Registration successful! <a href='login.php'>Login here</a>";
-        } catch (PDOException $e) {
-            echo "Error: " . $e->getMessage();
-        }
+    // Ensure passwords match
+    if ($password !== $confirm_password) {
+        $_SESSION['error'] = "Passwords do not match!";
+        header("Location: register.php");
+        exit;
+    }
+
+    // Check if email is already registered
+    $stmt = $conn->prepare("SELECT id FROM users WHERE email = ?");
+    $stmt->bind_param("s", $email);
+    $stmt->execute();
+    $stmt->store_result();
+
+    if ($stmt->num_rows > 0) {
+        $_SESSION['error'] = "Email already exists!";
+        header("Location: register.php");
+        exit;
+    }
+
+    // Hash the password
+    $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+    $role = "user"; // Default role
+
+    // Insert user into the database
+    $stmt = $conn->prepare("INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)");
+    $stmt->bind_param("ssss", $name, $email, $hashed_password, $role);
+
+    if ($stmt->execute()) {
+        $_SESSION['success'] = "Registration successful! Please login.";
+        header("Location: login.php");
+        exit;
     } else {
-        echo "All fields are required!";
+        $_SESSION['error'] = "Something went wrong. Try again.";
     }
 }
 ?>
-
-<form method="POST">
-    <input type="text" name="name" placeholder="Full Name" required><br>
-    <input type="email" name="email" placeholder="Email" required><br>
-    <input type="password" name="password" placeholder="Password" required><br>
-    <button type="submit">Register</button>
-</form>
