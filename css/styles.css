@@ -1,10 +1,13 @@
+/* General Styles */
 body {
     font-family: Arial, sans-serif;
-    margin: 20px;
-    padding: 20px;
     text-align: center;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
 }
 
+/* Navigation Bar */
 nav {
     background-color: #333;
     padding: 10px;
@@ -13,29 +16,125 @@ nav {
 nav a {
     color: white;
     text-decoration: none;
-    margin: 0 15px;
+    padding: 10px 15px;
+    margin: 0 5px;
+    display: inline-block;
+    font-weight: bold;
 }
 
+nav a:hover {
+    background-color: #575757;
+    border-radius: 5px;
+}
+
+/* Main Content Container */
+.container {
+    max-width: 800px;
+    margin: 50px auto;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Headings */
+h1, h2 {
+    color: #333;
+}
+
+/* Form Styles */
 form {
-    max-width: 300px;
-    margin: auto;
+    margin-top: 20px;
 }
 
-input, select, button {
+label {
+    font-weight: bold;
     display: block;
+    margin: 10px 0 5px;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+textarea {
     width: 100%;
-    margin: 10px 0;
     padding: 8px;
+    margin: 5px 0 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
 }
 
-button {
-    background-color: #28a745;
+/* Buttons */
+.button {
+    display: inline-block;
+    padding: 10px 15px;
+    font-size: 16px;
     color: white;
+    background-color: #007bff;
+    text-decoration: none;
+    border-radius: 5px;
     border: none;
-    padding: 10px;
     cursor: pointer;
+    margin-top: 10px;
 }
 
-button:hover {
-    background-color: #218838;
+.button:hover {
+    background-color: #0056b3;
+}
+
+/* Table Styles */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background: white;
+}
+
+th, td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+th {
+    background-color: #333;
+    color: white;
+}
+
+/* Success & Error Messages */
+.success {
+    color: green;
+    font-weight: bold;
+}
+
+.error {
+    color: red;
+    font-weight: bold;
+}
+
+/* Login & Register Page */
+.login-container, .register-container {
+    max-width: 400px;
+    margin: 100px auto;
+    padding: 20px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.login-container h2, .register-container h2 {
+    margin-bottom: 20px;
+}
+
+/* Register & Login Page Button */
+.small-button {
+    display: block;
+    margin-top: 10px;
+    color: #007bff;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.small-button:hover {
+    text-decoration: underline;
 }
